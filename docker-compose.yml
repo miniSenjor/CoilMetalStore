@@ -11,7 +11,7 @@ services:
     environment:
       # Используем переменные окружения или значения по умолчанию
       DB_HOST: db
-      DB_PORT: 5433
+      DB_PORT: 5432
       DB_NAME: CoilStore
       DB_USER: postgres
       DB_PASSWORD: postgres123
@@ -34,11 +34,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres123
     ports:
-      - "5433:5433"  # Для доступа с хоста (PgAdmin, DBeaver)
+      - "5433:5432"  # Для доступа с хоста (PgAdmin, DBeaver)
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      # Можно добавить скрипт инициализации
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: unless-stopped
     networks:
       - app-network

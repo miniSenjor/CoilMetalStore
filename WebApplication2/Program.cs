@@ -21,7 +21,7 @@ namespace WebApplication2
             string BuildConnectionStringFromEnv()
             {
                 var host = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";
-                var port = Environment.GetEnvironmentVariable("DB_PORT") ?? "5433";
+                var port = Environment.GetEnvironmentVariable("DB_PORT") ?? "5432";
                 var database = Environment.GetEnvironmentVariable("DB_NAME") ?? "CoilStore";
                 var username = Environment.GetEnvironmentVariable("DB_USER") ?? "postgres";
                 var password = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "postgres123";
@@ -74,19 +74,6 @@ namespace WebApplication2
                     Environment = app.Environment.EnvironmentName
                 });
             });
-
-            // ... остальной код приложения
-
-
-
-
-
-            
-
-
-
-
-
             // Автоматическое применение миграций при запуске
             using (var scope = app.Services.CreateScope())
             {
