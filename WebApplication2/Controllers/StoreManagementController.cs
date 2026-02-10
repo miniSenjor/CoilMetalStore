@@ -121,7 +121,7 @@ namespace WebApplication2.Controllers
             }
             catch(InvalidOperationException ex)
             {
-                return StatusCode(520, "Ошибка");
+                return StatusCode(520, ex);
             }
             catch (Exception ex)
             {
