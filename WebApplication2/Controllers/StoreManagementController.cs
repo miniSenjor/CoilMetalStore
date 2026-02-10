@@ -9,23 +9,20 @@ using WebApplication2.ResponseModels;
 
 namespace WebApplication2.Controllers
 {
-    /*[ApiController]
-    [Route("[controller]")]*/
     public class StoreManagementController : ControllerBase
     {
         private CoilDbContext _context;
-        //public StoreManagementController() { }
         public StoreManagementController(CoilDbContext context)
         {
             _context = context;
         }
 
-        public async Task<List<Coil>> Get()
-        {
-            return await _context.Coils
-                .AsNoTracking()
-                .ToListAsync();
-        }
+        /// <summary>
+        /// Добаление новго рулона
+        /// </summary>
+        /// <param name="length">длина</param>
+        /// <param name="weight">вес</param>
+        /// <returns></returns>
         public async Task<ActionResult<Coil>> Add(double length, double weight)
         {
             if (length <= 0)
@@ -44,6 +41,11 @@ namespace WebApplication2.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        /// <summary>
+        /// Удаление рулона
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<ActionResult<Coil>> Delete(double id)
         {
             if (id <=0)
@@ -71,11 +73,15 @@ namespace WebApplication2.Controllers
             }
         }
 
+        /// <summary>
+        /// Получение рулонов по фильтрам
+        /// </summary>
+        /// <param name="filter">фильтры</param>
+        /// <returns></returns>
         public async Task<ActionResult<Coil>> GetCoils([FromQuery] CoilFilterRequest filter)
         {
             IQueryable<Coil> query = _context.Coils;
 
-            // Применяем фильтры по одному диапазону
             if (filter.MinId.HasValue || filter.MaxId.HasValue)
             {
                 query = ApplyRangeFilter(query, r => r.Id, filter.MinId, filter.MaxId);
@@ -104,14 +110,9 @@ namespace WebApplication2.Controllers
 
             try
             {
-                // Получаем общее количество для пагинации
-                int totalCount = await query.CountAsync();
 
-                // Применяем пагинацию
                 var items = await query
-                    .OrderByDescending(r => r.DateAdd) // Сортировка по умолчанию
-                    .Skip((filter.Page - 1) * filter.PageSize)
-                    .Take(filter.PageSize)
+                    .OrderByDescending(r => r.DateAdd)
                     .ToListAsync();
                 return Ok(items);
             }
@@ -160,38 +161,12 @@ namespace WebApplication2.Controllers
             return query;
         }
 
-        // Перегрузка для nullable типов (например, DateDelete)
-        private IQueryable<Coil> ApplyRangeFilter<T>(
-            IQueryable<Coil> query,
-            Expression<Func<Coil, T>> selector,
-            T? minValue,
-            T? maxValue) where T : class
-        {
-            if (minValue != null)
-            {
-                var parameter = selector.Parameters[0];
-                var comparison = Expression.GreaterThanOrEqual(
-                    selector.Body,
-                    Expression.Constant(minValue, typeof(T))
-                );
-                var lambda = Expression.Lambda<Func<Coil, bool>>(comparison, parameter);
-                query = query.Where(lambda);
-            }
-
-            if (maxValue != null)
-            {
-                var parameter = selector.Parameters[0];
-                var comparison = Expression.LessThanOrEqual(
-                    selector.Body,
-                    Expression.Constant(maxValue, typeof(T))
-                );
-                var lambda = Expression.Lambda<Func<Coil, bool>>(comparison, parameter);
-                query = query.Where(lambda);
-            }
-
-            return query;
-        }
-
+        /// <summary>
+        /// Статистика за выбранный период
+        /// </summary>
+        /// <param name="minDate">дата начала</param>
+        /// <param name="maxDate">дата конца</param>
+        /// <returns></returns>
         public async Task<ActionResult> GetStatistics(DateTime? minDate, DateTime? maxDate)
         {
             if (!minDate.HasValue)
@@ -414,20 +389,13 @@ namespace WebApplication2.Controllers
             };
         }
 
+        /// <summary>
+        /// Класс для подчета веса рулонов в день
+        /// </summary>
         private class DailyWeight
         {
             public DateTime Date { get; set; }
             public double TotalWeight { get; set; }
         }
-
-        // Вспомогательный класс для SQL запроса
-        private class DailyCount
-        {
-            public DateTime Date { get; set; }
-            public int MaxCount { get; set; }
-            public int MinCount { get; set; }
-        }
-
     }
-    
 }

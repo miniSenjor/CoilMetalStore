@@ -9,18 +9,16 @@ services:
     ports:
       - "8081:8081"
     environment:
-      # Используем переменные окружения или значения по умолчанию
       DB_HOST: db
       DB_PORT: 5432
       DB_NAME: CoilStore
       DB_USER: postgres
       DB_PASSWORD: postgres123
-      ASPNETCORE_ENVIRONMENT: Development  # Можно менять на Production
+      ASPNETCORE_ENVIRONMENT: Development
     depends_on:
       db:
         condition: service_healthy
     volumes:
-      # Для логов, если нужно
       - ./logs:/app/logs
     restart: unless-stopped
     networks:
@@ -34,7 +32,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres123
     ports:
-      - "5433:5432"  # Для доступа с хоста (PgAdmin, DBeaver)
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
