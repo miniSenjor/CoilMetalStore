@@ -1,1 +1,2 @@
-# WebApplication2
+# CoilMetalStore
+backend для работы со складом рулонов металла
