@@ -1,6 +1,6 @@
 # CoilMetalStore
 backend для работы со складом рулонов металла
-#### для запуска 
+#### для запуска через Docker
 1 собрать решение
 2 выполнить docker-compose up -d --build
 3 открыть http://localhost:8081
