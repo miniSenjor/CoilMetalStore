@@ -311,9 +311,6 @@ namespace WebApplication2.Controllers
                 if (dailyAdditions.TryGetValue(day, out int added))
                     currentBalance += added;
 
-                // Убираем рулоны, которые удалили в этот день
-                // Удаление происходит в конце дня, поэтому влияет на следующий день
-                // Но если нужна точность на конец дня, оставляем как есть
                 if (dailyRemovals.TryGetValue(day, out int removed))
                     currentBalance -= removed;
 
