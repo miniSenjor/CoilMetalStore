@@ -9,8 +9,6 @@ using WebApplication2.ResponseModels;
 
 namespace WebApplication2.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
     public class StoreManagementController : ControllerBase
     {
         private CoilDbContext _context;
@@ -25,7 +23,6 @@ namespace WebApplication2.Controllers
         /// <param name="length">длина</param>
         /// <param name="weight">вес</param>
         /// <returns></returns>
-        [HttpPost("Add")]
         public async Task<ActionResult<Coil>> Add(double length, double weight)
         {
             if (length <= 0)
@@ -49,7 +46,6 @@ namespace WebApplication2.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpDelete("Delete")]
         public async Task<ActionResult<Coil>> Delete(double id)
         {
             if (id <=0)
@@ -82,7 +78,6 @@ namespace WebApplication2.Controllers
         /// </summary>
         /// <param name="filter">фильтры</param>
         /// <returns></returns>
-        [HttpGet("GetCoils")]
         public async Task<ActionResult<Coil>> GetCoils([FromQuery] CoilFilterRequest filter)
         {
             IQueryable<Coil> query = _context.Coils;
@@ -172,7 +167,6 @@ namespace WebApplication2.Controllers
         /// <param name="minDate">дата начала</param>
         /// <param name="maxDate">дата конца</param>
         /// <returns></returns>
-        [HttpGet("GetStatistics")]
         public async Task<ActionResult> GetStatistics(DateTime? minDate, DateTime? maxDate)
         {
             if (!minDate.HasValue)
