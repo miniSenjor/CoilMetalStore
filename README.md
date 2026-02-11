@@ -9,7 +9,7 @@ backend для работы со складом рулонов металла
 http://localhost:8081/StoreManagement/Add?length=1&weight=2
 #### GetCoils
 получение списка рулонов по фильтрам: MinId, MaxId, MinLength, MaxLength, MinDateAdd, MaxDateAdd, MinDateDelete, MaxDateDelete
-https://localhost:8081/StoreManagement/ПetСoilss?MinВateФвв=2026-02-07&MinLength=1
+https://localhost:8081/StoreManagement/GetСoilss?MinВateФвв=2026-02-07&MinLength=1
 #### Delete
 удаление рулона со склада по id
 https://localhost:8081/StoreManagement/delete?id=3
